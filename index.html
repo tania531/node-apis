@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.min.js"></script>
+    <script>
+      var app = angular.module("fs", []);
+      app.controller("fsCtrl", function($scope, $http) {
+        $scope.cards = [];
+        $scope.username = "";
+
+        $scope.addCard = function() {
+          $http.get("/" + $scope.username).success(function(data) {
+            console.log(data);
+            $scope.cards.push(data);
+          });
+        };
+      });
+
+      app.controller("gravCtrl", function($scope, md5) {
+        $scope.$watch('email' ,function() {
+          $scope.message = 'Your email Hash is: ' + md5.createHash($scope.email || '');
+        });
+      });
+
+  </script>
+  </head>
+  <body>
+    <div ng-app="fs" ng-controller="fsCtrl">
+      <input placeholder="github username" ng-model="username">
+      <button ng-click="addCard()">Add</button>
+      <ul>
+        <li ng-repeat="card in cards">
+          <img ng-src="{{card.avatar_url}}" width="80">
+        </li>
+      </ul>
+      <div ng-model="equation">
+      </div>
+
+      <div ng-app="fs" ng-controller="gravCtrl">
+        <input placeholder="email" ng-model="email">
+        <button ng-click="getGravatar()">Get Gravatar</button>
+
+        <div ng-model="equation">{{}}
+        </div>
+
+    </div><!-- end app and ctrl div -->
+  </body>
+</html>
