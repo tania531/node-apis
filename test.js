@@ -43,12 +43,15 @@ function responseHandler(req, res) {
 
   }
 
-  ///Counts/A Sentence here
+  ///Counts/A Sentence here '{"letters":15,"spaces":2,"words":6}'
   if (req.url.match("/Counts/")) {
+    var results = {};
       var count = req.url.match(/Counts\/(.*)/)[1];
-      res.write(count.replace(/%20/g," ").length.toString());
+      results.letters = count.replace(/%20/g," ").length.toString();
+      results.words = count.match(/\w+/g).length;
+      results.spaces = results.words - 1;
+      res.write(JSON.stringify(results));
       res.end();
   }
-
 
 } // end handleRequest
